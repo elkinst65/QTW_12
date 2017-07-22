@@ -1,6 +1,6 @@
 #
 # Section 7.1
-#
+# 
 empirical = replicate(6000, sum(rexp(n = 3)))
 
 mean(empirical)
