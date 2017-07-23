@@ -77,7 +77,7 @@ MCBA = function(params, repeats=5, mG=10, mO=1000) {
   mcResults = vector("list", length=n)
 
   for (i in 1:n) {
-    cat(paste("param set is", i, ": l =", params[i, 1], ": k = ", params[1, 2]), "\n")
+    cat(paste("param set is", i, ": l =", params[i, 1], ": k = ", params[i, 2]), "\n")
     mcResults[[i]] = replicate(repeats, exptOne2(l=params[i, 1], k=params[i, 2], mG=mG, mO=mO))
   }
   return(mcResults)
