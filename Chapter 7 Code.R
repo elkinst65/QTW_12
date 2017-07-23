@@ -153,6 +153,7 @@ segments(x0 = 0.1 + 0:max(numKids), y0 = rep(0, max(numKids)),
 pdf("numSimOffspring.pdf", width = 8, height = 5)
 oldPar = par(mar = c(4.1, 4.1, 1, 1))
 
+# For some reason this plot has been duplicated. No real significant changes when run
 plot(eprobs, type = "h",
      ylab = "Proportion", xlab = "Number of offspring")
 segments(x0 = 0.1 + 0:max(numKids), 
@@ -341,7 +342,11 @@ axis(1)
 numGen = length(g)
 numKids = sapply(g, nrow)
 treeN = g[ 2:(numGen + 1) ]
+treeN
+
 birthNum = c(0, cumsum(sapply(g, nrow))[ -length(g)])
+birthNum
+
 axis(2, at = birthNum + 1, 
      labels = paste("Gen", 1:numGen), tick = FALSE, las = 1)
 
@@ -515,7 +520,6 @@ dev.off()
 # Section 7.9
 #
 
-
 exptOne = function(l, k, mG, mO){
   # Helper function to call familyTree
   # Returns - summary statistics for analysis,
@@ -683,3 +687,4 @@ legend(x = 0.1, y = 3.25, legend = midBreaks, fill = cols,
 
 par(oldPar)
 dev.off()
+
