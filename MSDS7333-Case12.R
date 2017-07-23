@@ -115,3 +115,4 @@ save(mcGrid, file = "mcGridOutput.rda")
 load(file="mcGridOutput.rda")
 
 # visualize it
+head(mcGrid[[1]][,1]) #list 1, result 1
