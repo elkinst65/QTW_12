@@ -1,0 +1,91 @@
+---
+title: "MSDS 7333 - Unit 12 Case Study"
+author: "Matthew Baldree, Ben Brock, Tom Elkins, Austin Kelly"
+date: "July 22, 2017"
+output: 
+  html_notebook: default
+  html_document: default
+---
+
+
+### Table of Contents: {#TOC}
+<li>[Introduction](#secIntroduction)</li>
+<li>[Background](#secBackground)</li>
+<li>[Methods](#secMethods)</li>
+<li>[Results](#secResults)</li>
+<li>[Conclusions](#secConclusions)</li>
+<li>[References](#secReferences)</li>
+<li>[Appendix](#secAppendix)</li>
+  
+***
+
+<a id='secIntroduction'>
+
+### <b>Introduction</b></a>
+
+This report augments the case study performed in chapter 7 of *Data Science in R* "Simulation Study of a Branching Process" [[1]](#REF01).  At the end of section 7.9.1 of the book, the author implies that an alternate parameterization of the functions using just the ratio of the two parameters (kappa and lambda) may be possible if the relationship between the parameters was better understood.  We decided to do some exploratory study into that relationship.
+
+We look at the effects on the number of births, deaths, generations, and jobs by varying the rate for job lifetime (kappa) and the job creation rate (lambda).  We felt the focus on just the upper quartile of the number of offspring, and the static charts attempted in the book do not adequately convey the dynamics of the system, and we attempt to show this with full box/violin plots animated as the parameters change.
+
+[&uarr;TOC](#TOC)
+
+***
+
+<a id='secBackground'>
+
+### <b>Background</b></a>
+
+Throughout the case study [[1]](#REF01), the author consistently used a value of kappa = 0.3 and lambda = 0.5, occasionally setting one of the parameters to 1 to perform a test on a modified function.  The author then makes the suggestion, in section 7.9.1, that the behavior of the system changes when kappa > lambda (the process dies out fairly quickly), and other regions where processes seem to continue indefinitely.  The author then states that the existing code can be used without modification by simply setting kappa to 1.
+
+If the system is truly as dynamic as the plots/discussion indicates, then simply setting one of the parameters to 1 would only yield insight into a very small region of behaviors.  We felt that it would be interesting to vary both parameters and examine the nature of the system.  Obviously, static plots are simply insufficient for displaying the behaviors, so we wanted to capitalize on animated displays to show the dynamic characteristics.
+
+If some combinations of parameter values cause the system to continue indefinitely, we need to halt the process at a reasonable limit in order to collect sufficient data at a variety of combinations in the time available. Arguably, this has the effect of artificially bounding the system response; however, we feel that stopping the process and identifying those conditions are sufficient to show that the process *could* be indefinite under those conditions.
+
+[&uarr;TOC](#TOC)
+
+***
+
+<a id='secMethods'>
+
+### <b>Methods</b></a>
+
+We mimicked the code presented in the case study to ensure we could reproduce the documented results, and then modified the code to collect the data we needed. We then embeded the simulation functions in loops that would vary the parameters without human intervention.  This allowed us to run multiple cases on multiple machines to "divide-and-conquer."
+
+
+[&uarr;TOC](#TOC)
+
+***
+
+<a id='secResults'>
+
+### <b>Results</b></a>
+
+[&uarr;TOC](#TOC)
+
+***
+
+<a id='secConclusions'>
+
+### <b>Conclusions</b></a>
+
+[&uarr;TOC](#TOC)
+
+***
+
+<a id='secReferences'>
+
+### <b>References</b></a>
+
+* <a id='REF01'></a> [1] Nolan, Deborah; Data Science in R; 2015; Simulation Study of a Branching Process; Chapter 7.
+
+[&uarr;TOC](#TOC)
+
+***
+
+<a id='secAppendix'>
+
+### <b>Appendix</b></a>
+
+[&uarr;TOC](#TOC)
+
+***
