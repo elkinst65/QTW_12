@@ -64,6 +64,19 @@ We mimicked the code presented in the case study to ensure we could reproduce th
 
 ### <b>Results</b></a>
 
+After iterating through all combinations of kappa and lambda, we examined the results in a variety of ways to understand the behaviors.
+
+![Figure 1 - heatmaps of the response variables (colors are percentage of maximum)](images/heatmaps.png)
+
+From visual inspection:
+
+* There appears to be a "ridge" for the number of generations, with falloff on either side.
+    + This would imply an "optimal" fit is possible.
+* The chart of total number of jobs mimics the chart displayed in the book in which the author plotted the conditions with at least 20 jobs[[1: figure 7.9, page 306]](#REF01).
+* The plots of average birth and average death rates show a concave pattern.
+    + This artifact may preclude the use of a single ratio if birth and death rates are the desired response variable.
+
+
 [&uarr;TOC](#TOC)
 
 ***
@@ -71,6 +84,7 @@ We mimicked the code presented in the case study to ensure we could reproduce th
 <a id='secConclusions'>
 
 ### <b>Conclusions</b></a>
+
 
 [&uarr;TOC](#TOC)
 
@@ -92,6 +106,7 @@ We mimicked the code presented in the case study to ensure we could reproduce th
 
 * R code: <a href='MSDS7333-Case12.R'>MSDS7333-Case12.R</a>
 * Support functions: <a href='MSDS7333-Case12-fx.R'>MSDS7333-Case12-fx.R</a>
+* Javascript heatmap generation: <a href='ReadGrid.hta'>ReadGrid.hta</a> (note: this is an HTML application that can be executed only on a Microsoft Windows machine)
 
 [&uarr;TOC](#TOC)
 
