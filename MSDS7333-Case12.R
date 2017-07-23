@@ -97,8 +97,7 @@ mapply(function(oneSet, lambda, kappa) {
   mcTrialOutput,
   lambda=trialLambdas,
   kappa=trialKappas)
-mtext("Births Vs. Deaths per Lambda/Kappa", outer=TRUE)
-
+mtext("Avg Births Vs. Avg Deaths per Lambda/Kappa", outer=TRUE)
 
 ###################### TODO #############################
 
