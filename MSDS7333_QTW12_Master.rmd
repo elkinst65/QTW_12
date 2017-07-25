@@ -91,7 +91,7 @@ The results of our exploratory simulation for average birth and average death ti
 
 ![Figure 1: XY Plots of Avg. Birth vs. Avg. Death](images/XYPlots.png)
 
-In addition to the XY plot, we also created animated boxplots for average birth and death times with lambda or kapp fixed at one to visualize change. These animations show more activity when lambda and kappa are small (click to view).
+In addition to the XY plot, we also created animated boxplots for average birth and death times with lambda or kappa fixed at 0.1 to visualize change. These animations show more activity when lambda and kappa are small (click to view).
 
 * <a id="displayText" href="javascript:toggle(1);">Avg. Birth Animation with Kappa fixed</a>
   <div id="toggleText1" style="display: none">![Avg. Birth Animation with Kapp fixed](AllAnimations/Gifs/NewBirthKappaFixed.gif)</div>
