@@ -6,7 +6,9 @@
 # 4. Do they confirm the earlier findings?
 # 5. Do they offer any new insights?
 #
-setwd(".")
+# setwd(".")
+# For Surface
+setwd("C:/Users/austi/Documents/GitHub/QTW_12")
 options(error=recover, digits=4)
 source(file="MSDS7333-Case12-fx.r")
 library(lattice)
@@ -84,6 +86,7 @@ ylims <- c(0, 20)
 lambda2 <- seq(0.1, 3, by = 0.1)
 kappa2 <- seq(0.1, 5, by = 0.1)
 color <- "cyan2"
+color2 = "green"
 
 # births with fixed kappa
 for (i in 1:length(lambda2)){
@@ -94,7 +97,7 @@ for (i in 1:length(lambda2)){
   dev.off()
 }
 
-color2 = "green"
+
 # births with fixed lambda
 for (i in 1:length(kappa2)){
   tree = familyTree(lambda = 1, kappa = kappa2[i], maxGen = 100, maxOffspring = 1000)
@@ -120,6 +123,59 @@ for (i in 1:length(kappa2)){
   dfb <- sapply(tree, function(gen) mean(gen$births))
   png(file = paste("./completes2/deaths",kappa2[i]*10, ".png", sep = ""))
   boxplot(dfb, ylim = ylims, main = paste("Births: Lambda = 1, Kappa = ", paste(kappa2[i])), col = color2)
+  dev.off()
+}
+
+
+##
+# Everything in this next section is for lambda and kappa = 0.1 instead of 1 as shown above
+##
+
+# Let's check the limits for kappa and lambda = .1
+ylims <- c(0, 20)
+lambda2 <- seq(0.1, 3, by = 0.1)
+kappa2 <- seq(0.1, 5, by = 0.1)
+
+# tree = familyTree(lambda = 1, kappa = .1, maxGen = 100, maxOffspring = 1000)
+# dfb <- sapply(tree, function(gen) mean(gen$births))
+# sapply(tree, function(gen) range(gen$births)) # min, max in birth time for each generation
+# sapply(tree, function(gen) range(gen$completes)) # min, max in death time for each generation
+
+
+# births with fixed kappa = 0.1
+for (i in 1:length(lambda2)){
+  tree = familyTree(lambda = lambda2[i], kappa = .1, maxGen = 100, maxOffspring = 1000)
+  dfb <- sapply(tree, function(gen) mean(gen$births))
+  png(file = paste("./NewBirth1/births",lambda2[i]*10, ".png", sep = ""))
+  boxplot(dfb, ylim = c(0,90), main = paste("Births: Kappa = 0.1, Lambda = ", paste(lambda2[i])), col = color)
+  dev.off()
+}
+
+
+# births with fixed lambda = 0.1
+for (i in 1:length(kappa2)){
+  tree = familyTree(lambda = .1, kappa = kappa2[i], maxGen = 100, maxOffspring = 1000)
+  dfb <- sapply(tree, function(gen) mean(gen$births))
+  png(file = paste("./NewBirth2/births",kappa2[i]*10, ".png", sep = ""))
+  boxplot(dfb, ylim = c(0,120), main = paste("Births: Lambda = 0.1, Kappa = ", paste(kappa2[i])), col = color2)
+  dev.off()
+}
+
+# deaths with fixed kappa = 0.1
+for (i in 1:length(lambda2)){
+  tree = familyTree(lambda = lambda2[i], kappa = .1, maxGen = 100, maxOffspring = 1000)
+  dfd <- sapply(tree, function(gen) mean(gen$completes))
+  png(file = paste("./NewDeath1/deaths",lambda2[i]*10, ".png", sep = ""))
+  boxplot(dfb, main = paste("Births: Kappa = 0.1, Lambda = ", paste(lambda2[i])), col = color)
+  dev.off()
+}
+
+# deaths with fixed lambda = 0.1
+for (i in 1:length(kappa2)){
+  tree = familyTree(lambda = .1, kappa = kappa2[i], maxGen = 100, maxOffspring = 1000)
+  dfb <- sapply(tree, function(gen) mean(gen$births))
+  png(file = paste("./NewDeath2/deaths",kappa2[i]*10, ".png", sep = ""))
+  boxplot(dfb, ylim = c(0,2.5), main = paste("Births: Lambda = 0.1, Kappa = ", paste(kappa2[i])), col = color2)
   dev.off()
 }
 
