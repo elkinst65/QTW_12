@@ -6,7 +6,20 @@ output:
   html_notebook: default
   html_document: default
 ---
-
+<script language="javascript"> 
+    function toggle(num) {
+      var ele = document.getElementById("toggleText" + num);
+      var text = document.getElementById("displayText" + num);
+      if(ele.style.display == "block") {
+        ele.style.display = "none";
+        text.innerHTML = "show";
+      }
+      else {
+        ele.style.display = "block";
+        text.innerHTML = "hide";
+      }
+   } 
+</script>
 
 ### Table of Contents: {#TOC}
 <li>[Introduction](#secIntroduction)</li>
@@ -78,6 +91,17 @@ The results of our exploratory simulation for average birth and average death ti
 
 ![Figure 1: XY Plots of Avg. Birth vs. Avg. Death](images/XYPlots.png)
 
+In addition to the XY plot, we also created animated boxplots for average birth and death times with lambda or kapp fixed at one to visualize change. These animations show more activity when lambda and kappa are small.
+
+* <a id="displayText" href="javascript:toggle(1);">Avg. Birth Animation with Kappa fixed</a>
+  <div id="toggleText1" style="display: none">![Avg. Birth Animation with Kapp fixed](animate1/BirthsFixedKappa.gif)</div>
+* <a id="displayText" href="javascript:toggle(2);">Avg. Birth Animation with Lambda fixed</a>
+  <div id="toggleText2" style="display: none">![Avg. Birth Animation with Lambda fixed](animate2/BirthsFixedLambda.gif)</div>
+* <a id="displayText" href="javascript:toggle(3);">Avg. Death Animation with Kappa fixed</a>
+  <div id="toggleText3" style="display: none">![Avg. Death Animation with Kapp fixed](completes1/DeathsFixedKappa.gif)</div>
+* <a id="displayText" href="javascript:toggle(4);">Avg. Death Animation with Lambda fixed</a>
+  <div id="toggleText4" style="display: none">![Avg. Death Animation with Lambda fixed](completes2/DeathsFixedLambda.gif)</div>
+
 For our final simulation, we iterated through all combinations of kappa and lambda and examined the results in a variety of ways to understand the behaviors, see Figure 2.
 
 ![Figure 2: Heatmaps of the response variables (colors are percentage of maximum)](images/heatmaps.png)
@@ -90,7 +114,6 @@ From visual inspection:
 * The plots of average birth and average death times show a concave pattern.
     + This artifact may preclude the use of a single ratio if birth and death rates are the desired response variable.
     + Also, these plots show that births and deaths are longer if the lamda/kappa ratio are smaller.
-
 
 [&uarr;TOC](#TOC)
 
