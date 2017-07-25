@@ -100,7 +100,7 @@ for (i in 1:length(kappa2)){
   tree = familyTree(lambda = 1, kappa = kappa2[i], maxGen = 100, maxOffspring = 1000)
   dfb <- sapply(tree, function(gen) mean(gen$births))
   png(file = paste("./animate2/births",kappa2[i]*10, ".png", sep = ""))
-  boxplot(dfb, ylim = ylims, main = paste("Births: Lambda = 1, Kappaa = ", paste(kappa2[i])), col = color2)
+  boxplot(dfb, ylim = ylims, main = paste("Births: Lambda = 1, Kappa = ", paste(kappa2[i])), col = color2)
   dev.off()
 }
 
@@ -118,8 +118,8 @@ color2 = "green"
 for (i in 1:length(kappa2)){
   tree = familyTree(lambda = 1, kappa = kappa2[i], maxGen = 100, maxOffspring = 1000)
   dfb <- sapply(tree, function(gen) mean(gen$births))
-  png(file = paste("./completes2/births",kappa2[i]*10, ".png", sep = ""))
-  boxplot(dfb, ylim = ylims, main = paste("Births: Lambda = 1, Kappaa = ", paste(kappa2[i])), col = color2)
+  png(file = paste("./completes2/deaths",kappa2[i]*10, ".png", sep = ""))
+  boxplot(dfb, ylim = ylims, main = paste("Births: Lambda = 1, Kappa = ", paste(kappa2[i])), col = color2)
   dev.off()
 }
 
