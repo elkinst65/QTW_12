@@ -55,6 +55,8 @@ We mimicked the code presented in the case study to ensure we could reproduce th
 
 <b>$\kappa$</b> : 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 2.25, 2.5, 2.75, 3.0, 3.25, 3.5, 3.75, 4.0, 4.5, 5.0
 
+For each lambda/kappa paramter combination, four hundred instances were generated unless the maximum generations or jobs of 20 and 1,000 respectively was reached. For each simulation, the number of generations, the number of jobs, the average birth time, and the average death time were recorded. The aggregate list of the simulation results were then visualized for easier insight.
+
 
 [&uarr;TOC](#TOC)
 
@@ -64,7 +66,7 @@ We mimicked the code presented in the case study to ensure we could reproduce th
 
 ### <b>Results</b></a>
 
-After iterating through all combinations of kappa and lambda, we examined the results in a variety of ways to understand the behaviors.
+After iterating through all combinations of kappa and lambda, we examined the results in a variety of ways to understand the behaviors, see Figure 1.
 
 ![Figure 1 - heatmaps of the response variables (colors are percentage of maximum)](images/heatmaps.png)
 
@@ -73,8 +75,9 @@ From visual inspection:
 * There appears to be a "ridge" for the number of generations, with falloff on either side.
     + This would imply an "optimal" fit is possible.
 * The chart of total number of jobs mimics the chart displayed in the book in which the author plotted the conditions with at least 20 jobs[[1: figure 7.9, page 306]](#REF01).
-* The plots of average birth and average death rates show a concave pattern.
+* The plots of average birth and average death times show a concave pattern.
     + This artifact may preclude the use of a single ratio if birth and death rates are the desired response variable.
+    + Also, these plots show that births and deaths are longer if the lamda/kappa ratio are smaller.
 
 
 [&uarr;TOC](#TOC)
@@ -85,6 +88,9 @@ From visual inspection:
 
 ### <b>Conclusions</b></a>
 
+We explored further the relationship of lamda and kappa parameters performed in a use case within chapter 7 of *Data Science in R* "Simulation Study of a Branching Process" [[1]](#REF01).  We looked at the effects on the number of births, deaths, generations, and jobs by varying the rate for job lifetime (kappa) and the job creation rate (lambda).  We chose a heatmap to visualize the results from all four simulation statistics to compare with previous work in the book and gain possible new insights.
+
+The results of our work shows that a ratio of 0.5 lambda/kappa could be used to define a ridge of generations. A number less than 0.5 yields a lower number of generations. And, a number higher than 0.5 yields a higher number of generations. For the number of jobs statistic, a ratio of 30 yielded the most number of jobs while a ratio of 0.02 yielded the least. Average births and average deaths statistics look near similar with a concave heatmap pattern. The longest average births and deaths occurred when the rates for both lambda and kappa are below 0.3. This new insight requires further investigation to better understand their effects on birth and death.
 
 [&uarr;TOC](#TOC)
 
