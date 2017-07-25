@@ -85,19 +85,48 @@ lambda2 <- seq(0.1, 3, by = 0.1)
 kappa2 <- seq(0.1, 5, by = 0.1)
 color <- "cyan2"
 
-for (i in 1:length(lambda)){
+# births with fixed kappa
+for (i in 1:length(lambda2)){
   tree = familyTree(lambda = lambda2[i], kappa = 1, maxGen = 100, maxOffspring = 1000)
   dfb <- sapply(tree, function(gen) mean(gen$births))
-  png(file = paste("/animate1/births",lambda2[i]*10, ".png", sep = ""))
+  png(file = paste("./animate1/births",lambda2[i]*10, ".png", sep = ""))
   boxplot(dfb, ylim = ylims, main = paste("Births: Kappa = 1, Lambda = ", paste(lambda2[i])), col = color)
   dev.off()
 }
 
+color2 = "green"
+# births with fixed lambda
+for (i in 1:length(kappa2)){
+  tree = familyTree(lambda = 1, kappa = kappa2[i], maxGen = 100, maxOffspring = 1000)
+  dfb <- sapply(tree, function(gen) mean(gen$births))
+  png(file = paste("./animate2/births",kappa2[i]*10, ".png", sep = ""))
+  boxplot(dfb, ylim = ylims, main = paste("Births: Lambda = 1, Kappaa = ", paste(kappa2[i])), col = color2)
+  dev.off()
+}
 
+# deaths with fixed kappa
+for (i in 1:length(lambda2)){
+  tree = familyTree(lambda = lambda2[i], kappa = 1, maxGen = 100, maxOffspring = 1000)
+  dfd <- sapply(tree, function(gen) mean(gen$completes))
+  png(file = paste("./completes1/deaths",lambda2[i]*10, ".png", sep = ""))
+  boxplot(dfb, ylim = ylims, main = paste("Births: Kappa = 1, Lambda = ", paste(lambda2[i])), col = color)
+  dev.off()
+}
+
+color2 = "green"
+# deaths with fixed lambda
+for (i in 1:length(kappa2)){
+  tree = familyTree(lambda = 1, kappa = kappa2[i], maxGen = 100, maxOffspring = 1000)
+  dfb <- sapply(tree, function(gen) mean(gen$births))
+  png(file = paste("./completes2/births",kappa2[i]*10, ".png", sep = ""))
+  boxplot(dfb, ylim = ylims, main = paste("Births: Lambda = 1, Kappaa = ", paste(kappa2[i])), col = color2)
+  dev.off()
+}
 
 mean(sapply(tree, function(gen) mean(gen$completes))) # mean death time for tree
 dfd <- sapply(tree, function(gen) mean(gen$completes))
 dfd
+boxplot(dfd)
 
 #Austin
 #
