@@ -91,7 +91,7 @@ The results of our exploratory simulation for average birth and average death ti
 
 ![Figure 1: XY Plots of Avg. Birth vs. Avg. Death](images/XYPlots.png)
 
-In addition to the XY plot, we also created animated boxplots for average birth and death times with lambda or kapp fixed at one to visualize change. These animations show more activity when lambda and kappa are small (click to view).
+In addition to the XY plot, we also created animated boxplots for average birth and death times with lambda or kapp fixed at one to visualize change. These animations show more activity when lambda and kappa are small (click to view) [[2]](#REF02).
 
 * <a id="displayText" href="javascript:toggle(1);">Avg. Birth Animation with Kappa fixed</a>
   <div id="toggleText1" style="display: none">![Avg. Birth Animation with Kapp fixed](AllAnimations/Gifs/NewBirthKappaFixed.gif)</div>
@@ -136,6 +136,7 @@ The results of our work shows that a ratio of 0.5 lambda/kappa could be used to 
 ### <b>References</b></a>
 
 * <a id='REF01'></a> [1] Nolan, Deborah; Data Science in R; 2015; Simulation Study of a Branching Process; Chapter 7.
+* <a id='REF02'></a> [2] Javascript div folding: <a href='https://stackoverflow.com/questions/39109908/how-to-add-numbered-section-folding-to-rmarkdown'>R Markdown Folding</a>
 
 [&uarr;TOC](#TOC)
 
