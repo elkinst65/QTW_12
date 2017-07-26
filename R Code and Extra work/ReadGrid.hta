@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<style>
+			html body {
+				margin: 0;
+				padding: 0;
+				font-family: Arial;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="divGTl" style="width:500px;position:relative;float:left;text-align:center;">Number of Generations <span id="spnMxG"></span></div>
+		<div id="divJTl" style="width:500px;position:relative;float:left;text-align:center;">Number of Jobs <span id="spnMxJ"></span></div>
+		<div id="divGen" style="width:500px;height:500px;position:relative;float:left;"><canvas id="cnvGen" width="500px" height="500px"></canvas></div>
+		<div id="divJob" style="width:500px;height:500px;position:relative;float:left;"><canvas id="cnvJob" width="500px" height="500px"></canvas></div>
+		<div id="divBTl" style="width:500px;position:relative;float:left;text-align:center;">Average Births <span id="spnMxB"></span></div>
+		<div id="divDTl" style="width:500px;position:relative;float:left;text-align:center;">Average Deaths <span id="spnMxD"></span></div>
+		<div id="divBth" style="width:500px;height:500px;position:relative;float:left;"><canvas id="cnvBth" width="500px" height="500px"></canvas></div>
+		<div id="divDth" style="width:500px;height:500px;position:relative;float:left;"><canvas id="cnvDth" width="500px" height="500px"></canvas></div>
+		<table width="100%" border="1" style="text-align:center;"><tr><td style="background-color:#0000FF;color:#FFFFFF;">0-14.3%</td><td style="background-color:#00FFFF;">14.3-28.6%</td><td style="background-color:#00FF00;">28.6-42.8%</td><td style="background-color:#FFFF00;">42.8-57.1%</td><td style="background-color:#FF0000;">57.1-71.4%</td><td style="background-color:#FF00FF;">71.4-85.7%</td><td style="background-color:#FFFFFF;">85.7-100%</td></tr></table>
+		<script>
+			var goFSO = new ActiveXObject("Scripting.FileSystemObject");
+			var goSum = {};
+
+			//	Open the CSV file
+			var fileResults = goFSO.OpenTextFile("mcgrid.csv");
+			
+			var psLabels = fileResults.readLine();				//	Read and ignore the first line - it contains labels that aren't very useful
+			var paNumGen = fileResults.readLine().split(",");	//	The second line should contain the number of generations for each run
+			var paNumJob = fileResults.readLine().split(",");	//	The third line should contain the number of jobs generated during each run
+			var paAvgBth = fileResults.readLine().split(",");	//	The fourth line should contain the average birth rate during each run
+			var paAvgDth = fileResults.readLine().split(",");	//	The fifth line should contain the average death rate during each run
+			
+			//	Our discrete lambda and kappa values (to use as axis labels)
+			var paLambda = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 2.25, 2.5, 2.75, 3.0];
+			var pnNumLambda = paLambda.length;
+			var paKappa = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 2.25, 2.5, 2.75, 3.0, 3.25, 3.5, 3.75, 4.0, 4.5, 5.0];
+			var pnNumKappa = paKappa.length;
+			
+			//	The R code ran each combination 400 times
+			var pnNumRepeats = 400;
+			
+			//	Keep track of the maximum values for each result
+			var pdMaxGens = -9999;
+			var pdMaxJobs = -9999;
+			var pdMaxBths = -9999;
+			var pdMaxDths = -9999;
+
+			//	Loop through the kappa values
+			for (pnK=0; pnK < pnNumKappa; pnK++) {
+				
+				//	Loop through the lambda values
+				for (pnL=0; pnL < pnNumLambda; pnL++) {
+				
+					//	Reset the counters for this combination
+					var pnGens = 0;
+					var pnJobs = 0;
+					var pdSumB = 0.0;
+					var pdSumD = 0.0;
+					
+					//	Generate the key for this combination
+					var psKey = pnK + ":" + pnL;		// first key is '0:0'
+					
+					//	Loop through the 400 runs
+					for (pnIter=0; pnIter < pnNumRepeats; pnIter++) {
+						
+						//	Calculate the index to the results.
+						//	The zero column are labels, so the first valid result is at column 1:
+						//		@ k = 0, l = 0, index = (k * #lambda) + (l * #runs) + run + 1 = (0 * 17) + (0 * 400) + 0 + 1 = 1
+						//		@ k = 1, l = 0, index = (1 * 17) + 
+						var pnI = (pnK * pnNumLambda * pnNumRepeats) + (pnL * pnNumRepeats) + pnIter + 1
+						
+						pnGens += +paNumGen[pnI];			//	Sum the number of generations
+						var pnJob = +paNumJob[pnI];			//	Get the number of jobs
+						pnJobs += pnJob;					//	Sum the number of jobs
+						pdSumB += pnJob * +paAvgBth[pnI];	//	mean birth time * #jobs gives us the sum of birth times
+						pdSumD += pnJob * +paAvgDth[pnI];	//	mean death time * #jobs gives us the sum of death times
+					}
+					
+					if (pnGens > pdMaxGens) {pdMaxGens = pnGens;}
+					if (pnJobs > pdMaxJobs) {pdMaxJobs = pnJobs;}
+					if ((pdSumB/pnJobs) > pdMaxBths) {pdMaxBths = (pdSumB/pnJobs);}
+					if ((pdSumD/pnJobs) > pdMaxDths) {pdMaxDths = (pdSumD/pnJobs);}
+					
+					//	We now have the total count of generations, total count of jobs, total sum of birth times, and total sum of death times
+					//	Add an object that summarizes this data
+					goSum[psKey] = {"l": pnL, "k": pnK, "lambda": paLambda[pnL], "kappa": paKappa[pnK], "gens": pnGens, "jobs": pnJobs, "sumB": pdSumB, "sumD": pdSumD, "avgB": pdSumB/pnJobs, "avgD": pdSumD/pnJobs};
+				}
+			}
+			
+			//	Update the max values for the chart titles
+			document.getElementById("spnMxG").innerText = "(" + pdMaxGens + " max)"
+			document.getElementById("spnMxJ").innerText = "(" + pdMaxJobs + " max)"
+			document.getElementById("spnMxB").innerText = "(" + pdMaxBths + " max)"
+			document.getElementById("spnMxD").innerText = "(" + pdMaxDths + " max)"
+			
+			function dec2hex(xnDec) {
+				var pnDec = Math.floor(xnDec);
+				var psHex = ("0" + pnDec.toString(16)).slice(-2);
+				return psHex;
+			}
+
+			function colorScale(xnValue, xnMax) {
+				var pnPct = (xnValue / xnMax);
+				var pdHeat = pnPct * 1536;
+				
+				if (pdHeat < 256) {
+					return "#00" + dec2hex(pdHeat) + "FF";			// 00 00 ff blue => 00 ff ff cyan
+				} else if (pdHeat < 512) {
+					return "#00FF" + dec2hex(511 - pdHeat);			// 00 ff ff cyan => 00 ff 00 green
+				} else if (pdHeat < 768) {
+					return "#" + dec2hex(pdHeat - 512) + "FF00";	// 00 ff 00 green => ff ff 00 yellow
+				} else if (pdHeat < 1024) {
+					return "#FF" + dec2hex(1024 - pdHeat) + "00";	// ff ff 00 yellow => ff 00 00 red
+				} else if (pdHeat < 1280) {
+					return "#FF00" + dec2hex(pdHeat - 1024);		// ff 00 00 red => ff 00 ff magenta
+				} else {
+					return "#FF" + dec2hex(pdHeat - 1280) + "FF";	// ff 00 ff magenta => ff ff ff white
+				}
+			}
+			
+			/*
+			**	Generate the generations heatmap
+			*/
+			var tileWidth = (document.getElementById("divGen").clientWidth - 20) / pnNumLambda;
+			var tileHeight = (document.getElementById("divGen").clientHeight - 15) / pnNumKappa;
+		
+			var heatMap = document.getElementById("cnvGen").getContext("2d");
+			
+			heatMap.fillStyle = "black";
+			heatMap.textAlign = "center";
+			heatMap.fillText("k \\ l",10,10);
+			
+			for (pnL=0; pnL < pnNumLambda; pnL++) {
+			
+				heatMap.fillStyle = "black";
+				heatMap.textAlign = "center";
+				heatMap.fillText(paLambda[pnL],20 + (pnL * tileWidth) + (tileWidth / 2), 10);
+				
+				for (pnK=0; pnK < pnNumKappa; pnK++) {
+				
+					heatMap.textAlign = "left";
+					heatMap.fillStyle = "black";
+					heatMap.fillText(paKappa[pnK],3,18 + ((pnNumKappa - pnK - 1) * tileHeight) + (tileHeight / 2));
+				
+					var psKey = pnK + ":" + pnL;
+					
+					heatMap.fillStyle = colorScale(goSum[psKey].gens, pdMaxGens);
+					heatMap.fillRect(20 + (pnL * tileWidth), 15 + ((pnNumKappa - pnK - 1) * tileHeight), tileWidth, tileHeight);
+				}
+			}
+			
+			/*
+			**	Generate the jobs heatmap
+			*/
+			var tileWidth = (document.getElementById("divJob").clientWidth - 20) / pnNumLambda;
+			var tileHeight = (document.getElementById("divJob").clientHeight - 15) / pnNumKappa;
+		
+			var heatMap = document.getElementById("cnvJob").getContext("2d");
+			
+			heatMap.fillStyle = "black";
+			heatMap.textAlign = "center";
+			heatMap.fillText("k \\ l",10,10);
+			
+			for (pnL=0; pnL < pnNumLambda; pnL++) {
+			
+				heatMap.fillStyle = "black";
+				heatMap.textAlign = "center";
+				heatMap.fillText(paLambda[pnL],20 + (pnL * tileWidth) + (tileWidth / 2), 10);
+				
+				for (pnK=0; pnK < pnNumKappa; pnK++) {
+				
+					heatMap.textAlign = "left";
+					heatMap.fillStyle = "black";
+					heatMap.fillText(paKappa[pnK],3,18 + ((pnNumKappa - pnK - 1) * tileHeight) + (tileHeight / 2));
+				
+					var psKey = pnK + ":" + pnL;
+					
+					heatMap.fillStyle = colorScale(goSum[psKey].jobs, pdMaxJobs);
+					heatMap.fillRect(20 + (pnL * tileWidth), 15 + ((pnNumKappa - pnK - 1) * tileHeight), tileWidth, tileHeight);
+				}
+			}
+				
+			
+			/*
+			**	Generate the birth rate heatmap
+			*/
+			var tileWidth = (document.getElementById("divBth").clientWidth - 20) / pnNumLambda;
+			var tileHeight = (document.getElementById("divBth").clientHeight - 15) / pnNumKappa;
+		
+			var heatMap = document.getElementById("cnvBth").getContext("2d");
+			
+			heatMap.fillStyle = "black";
+			heatMap.textAlign = "center";
+			heatMap.fillText("k \\ l",10,10);
+			
+			for (pnL=0; pnL < pnNumLambda; pnL++) {
+			
+				heatMap.fillStyle = "black";
+				heatMap.textAlign = "center";
+				heatMap.fillText(paLambda[pnL],20 + (pnL * tileWidth) + (tileWidth / 2), 10);
+				
+				for (pnK=0; pnK < pnNumKappa; pnK++) {
+				
+					heatMap.textAlign = "left";
+					heatMap.fillStyle = "black";
+					heatMap.fillText(paKappa[pnK],3,18 + ((pnNumKappa - pnK - 1) * tileHeight) + (tileHeight / 2));
+				
+					var psKey = pnK + ":" + pnL;
+					
+					heatMap.fillStyle = colorScale(goSum[psKey].avgB, pdMaxBths);
+					heatMap.fillRect(20 + (pnL * tileWidth), 15 + ((pnNumKappa - pnK - 1) * tileHeight), tileWidth, tileHeight);
+				}
+			}
+			
+			/*
+			**	Generate the death rate heatmap
+			*/
+			var tileWidth = (document.getElementById("divDth").clientWidth - 20) / pnNumLambda;
+			var tileHeight = (document.getElementById("divDth").clientHeight - 15) / pnNumKappa;
+		
+			var heatMap = document.getElementById("cnvDth").getContext("2d");
+			
+			heatMap.fillStyle = "black";
+			heatMap.textAlign = "center";
+			heatMap.fillText("k \\ l",10,10);
+			
+			for (pnL=0; pnL < pnNumLambda; pnL++) {
+			
+				heatMap.fillStyle = "black";
+				heatMap.textAlign = "center";
+				heatMap.fillText(paLambda[pnL],20 + (pnL * tileWidth) + (tileWidth / 2), 10);
+				
+				for (pnK=0; pnK < pnNumKappa; pnK++) {
+				
+					heatMap.textAlign = "left";
+					heatMap.fillStyle = "black";
+					heatMap.fillText(paKappa[pnK],3,18 + ((pnNumKappa - pnK - 1) * tileHeight) + (tileHeight / 2));
+				
+					var psKey = pnK + ":" + pnL;
+					
+					heatMap.fillStyle = colorScale(goSum[psKey].avgD, pdMaxDths);
+					heatMap.fillRect(20 + (pnL * tileWidth), 15 + ((pnNumKappa - pnK - 1) * tileHeight), tileWidth, tileHeight);
+				}
+			}
+			alert("Complete!");
+		</script>
+	</body>
+</html>
+
